@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\project\\level-2\\book-catallog-backend\\logs\\winston\\errors\\.cdd43670f06109d458a05736a363f486312e3f48-audit.json",
+    "files": [
+        {
+            "date": 1693497897988,
+            "name": "C:\\project\\level-2\\book-catallog-backend\\logs\\winston\\errors\\phu-2023-31-08-22-error.log",
+            "hash": "48fe79bb6cb6fd43161718cd2bf47f0e4edc0b9b1e58d61d29b351f08ffd7c65"
+        }
+    ],
+    "hashType": "sha256"
+}

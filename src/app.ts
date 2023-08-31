@@ -4,6 +4,7 @@ import httpStatus from 'http-status';
 import routes from './app/routes';
 
 import cookieParser from 'cookie-parser';
+import globalErrorHandler from './app/middlewares/globalErrorHandler';
 
 const app: Application = express();
 
@@ -17,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1', routes);
 
 //global error handler
-//app.use(globalErrorHandler);
+app.use(globalErrorHandler);
 
 //handle not found
 app.use((req: Request, res: Response, next: NextFunction) => {
