@@ -1,70 +1,64 @@
-import { Book } from '@prisma/client';
+import { ReviewAndRating } from '@prisma/client';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { paginationFields } from '../../../constants/pagination';
 import catchAsync from '../../../shared/catchAsync';
-import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
-import { bookFilterAbleFields } from './book.constants';
-import { BookService } from './book.service';
+import { ReviewAndRatingService } from './ReviewAndRating.service';
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
-  const result = await BookService.insertIntoDB(req.body);
-  sendResponse<Book>(res, {
+  const result = await ReviewAndRatingService.insertIntoDB(req.body);
+  sendResponse<ReviewAndRating>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Book Created!!',
+    message: ' Created!!',
     data: result,
   });
 });
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, bookFilterAbleFields);
-  const options = pick(req.query, paginationFields);
-
-  const result = await BookService.getAllFromDB(filters, options);
+  const result = await ReviewAndRatingService.getAllFromDB();
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Book data fetched!!',
-    meta: result.meta,
-    data: result.data,
+    message: ' data fetched!!',
+
+    data: result,
   });
 });
 
 const getDataById = catchAsync(async (req: Request, res: Response) => {
-  const result = await BookService.getDataById(req.params.id);
+  const result = await ReviewAndRatingService.getDataById(req.params.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Book data fetched!!',
+    message: ' data fetched!!',
     data: result,
   });
 });
 
 const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const result = await BookService.updateOneInDB(id, req.body);
+  const result = await ReviewAndRatingService.updateOneInDB(id, req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Book updated successfully',
+    message: 'updated successfully',
     data: result,
   });
 });
 
 const deleteByIdFromDB = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const result = await BookService.deleteByIdFromDB(id);
+  const result = await ReviewAndRatingService.deleteByIdFromDB(id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Book delete successfully',
+    message: 'delete successfully',
     data: result,
   });
 });
 
-export const BookController = {
+export const ReviewAndRatingController = {
   insertIntoDB,
   getAllFromDB,
   getDataById,
