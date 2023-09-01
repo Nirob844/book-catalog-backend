@@ -1,3 +1,4 @@
+import { Order } from '@prisma/client';
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import prisma from '../../../shared/prisma';
@@ -52,6 +53,64 @@ const insertIntoDB = async (data: IOrderData): Promise<any> => {
   throw new ApiError(httpStatus.BAD_REQUEST, 'Unable to create course');
 };
 
+const getAllFromDB = async (): Promise<Order[]> => {
+  const reviewsAndRatings = await prisma.order.findMany({
+    include: {
+      user: true,
+      orderedBooks: {
+        include: {
+          book: true,
+        },
+      },
+    },
+  });
+  return reviewsAndRatings;
+};
+
+const getDataById = async (id: string): Promise<Order | null> => {
+  const result = await prisma.order.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      user: true,
+      orderedBooks: {
+        include: {
+          book: true,
+        },
+      },
+    },
+  });
+
+  return result;
+};
+
+const updateOneInDB = async (
+  id: string,
+  payload: Partial<Order>
+): Promise<Order> => {
+  const result = await prisma.order.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+  return result;
+};
+
+const deleteByIdFromDB = async (id: string): Promise<Order> => {
+  const result = await prisma.order.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
 export const OrderService = {
   insertIntoDB,
+  getAllFromDB,
+  getDataById,
+  updateOneInDB,
+  deleteByIdFromDB,
 };
