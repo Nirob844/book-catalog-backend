@@ -11,16 +11,17 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  name       String
-  email      String   @unique
-  password   String
-  role       Role // 'admin' or 'customer'
-  contactNo  String
-  address    String
-  profileImg String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id               String            @id @default(uuid())
+  name             String
+  email            String            @unique
+  password         String
+  role             Role // 'admin' or 'customer'
+  contactNo        String
+  address          String
+  profileImg       String
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  reviewAndRatings ReviewAndRating[]
 
   @@map("user")
 }
@@ -36,18 +37,33 @@ model Category {
 }
 
 model Book {
-  id              String   @id @default(uuid())
-  title           String
-  author          String
-  price           Float
-  genre           String
-  publicationDate DateTime
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  categoryId      String // Assuming categoryId is a UUID as well
-  category        Category @relation(fields: [categoryId], references: [id])
+  id               String            @id @default(uuid())
+  title            String
+  author           String
+  price            Float
+  genre            String
+  publicationDate  DateTime
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  categoryId       String // Assuming categoryId is a UUID as well
+  category         Category          @relation(fields: [categoryId], references: [id])
+  reviewAndRatings ReviewAndRating[]
 
   @@map("book")
+}
+
+model ReviewAndRating {
+  id     String @id @default(uuid())
+  review String
+  rating Int
+  userId String
+  bookId String
+
+  // Define relationships to User and Book models
+  user User @relation(fields: [userId], references: [id])
+  book Book @relation(fields: [bookId], references: [id])
+
+  @@map("review_and_rating")
 }
 
 enum Role {
