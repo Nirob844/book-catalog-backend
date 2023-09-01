@@ -16,13 +16,13 @@ const insertIntoDB = async (
 };
 
 const getAllFromDB = async (): Promise<ReviewAndRating[]> => {
-  const reviewsAndRatings = await prisma.reviewAndRating.findMany({
+  const result = await prisma.reviewAndRating.findMany({
     include: {
       user: true,
       book: true,
     },
   });
-  return reviewsAndRatings;
+  return result;
 };
 
 const getDataById = async (id: string): Promise<ReviewAndRating | null> => {

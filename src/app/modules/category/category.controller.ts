@@ -1,11 +1,8 @@
 import { Category } from '@prisma/client';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { paginationFields } from '../../../constants/pagination';
 import catchAsync from '../../../shared/catchAsync';
-import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
-import { categoryFilterAbleFields } from './category.constants';
 import { CategoryService } from './category.service';
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
@@ -19,16 +16,12 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, categoryFilterAbleFields);
-  const options = pick(req.query, paginationFields);
-
-  const result = await CategoryService.getAllFromDB(filters, options);
+  const result = await CategoryService.getAllFromDB();
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Category data fetched!!',
-    meta: result.meta,
-    data: result.data,
+    message: ' data fetched!!',
+    data: result,
   });
 });
 
@@ -59,7 +52,7 @@ const deleteByIdFromDB = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic Semester delete successfully',
+    message: ' delete successfully',
     data: result,
   });
 });

@@ -1,10 +1,5 @@
-import { Category, Prisma } from '@prisma/client';
-import { paginationHelpers } from '../../../helpers/paginationHelper';
-import { IGenericResponse } from '../../../interfaces/common';
-import { IPaginationOptions } from '../../../interfaces/pagination';
+import { Category } from '@prisma/client';
 import prisma from '../../../shared/prisma';
-import { categorySearchAbleFields } from './category.constants';
-import { ICategoryFilterRequest } from './category.interface';
 
 const insertIntoDB = async (data: Category): Promise<Category> => {
   const result = await prisma.category.create({
@@ -14,69 +9,22 @@ const insertIntoDB = async (data: Category): Promise<Category> => {
   return result;
 };
 
-const getAllFromDB = async (
-  filters: ICategoryFilterRequest,
-  options: IPaginationOptions
-): Promise<IGenericResponse<Category[]>> => {
-  const { page, limit, skip } = paginationHelpers.calculatePagination(options);
-  const { searchTerm, ...filterData } = filters;
-  console.log(options);
-  const andConditions = [];
-
-  if (searchTerm) {
-    andConditions.push({
-      OR: categorySearchAbleFields.map(field => ({
-        [field]: {
-          contains: searchTerm,
-          mode: 'insensitive',
-        },
-      })),
-    });
-  }
-
-  if (Object.keys(filterData).length > 0) {
-    andConditions.push({
-      AND: Object.keys(filterData).map(key => ({
-        [key]: {
-          equals: (filterData as any)[key],
-        },
-      })),
-    });
-  }
-
-  const whereConditions: Prisma.CategoryWhereInput =
-    andConditions.length > 0 ? { AND: andConditions } : {};
-
+const getAllFromDB = async (): Promise<Category[]> => {
   const result = await prisma.category.findMany({
-    where: whereConditions,
-    skip,
-    take: limit,
-    orderBy:
-      options.sortBy && options.sortOrder
-        ? {
-            [options.sortBy]: options.sortOrder,
-          }
-        : {
-            createdAt: 'desc',
-          },
-  });
-
-  const total = await prisma.category.count();
-
-  return {
-    meta: {
-      total,
-      page,
-      limit,
+    include: {
+      books: true,
     },
-    data: result,
-  };
+  });
+  return result;
 };
 
 const getDataById = async (id: string): Promise<Category | null> => {
   const result = await prisma.category.findUnique({
     where: {
       id,
+    },
+    include: {
+      books: true,
     },
   });
 
