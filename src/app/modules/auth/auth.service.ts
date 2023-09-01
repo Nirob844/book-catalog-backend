@@ -2,11 +2,21 @@ import { getUserByEmail, isPasswordMatched } from './auth.utils';
 
 import httpStatus from 'http-status';
 
+import { User } from '@prisma/client';
 import { Secret } from 'jsonwebtoken';
 import config from '../../../config';
 import ApiError from '../../../errors/ApiError';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
+import prisma from '../../../shared/prisma';
 import { ILoginUser, ILoginUserResponse } from './auth.interface';
+
+const insertIntoDB = async (data: User): Promise<User> => {
+  const result = await prisma.user.create({
+    data,
+  });
+
+  return result;
+};
 
 const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   const { email, password } = payload;
@@ -48,5 +58,6 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
 };
 
 export const AuthService = {
+  insertIntoDB,
   loginUser,
 };
