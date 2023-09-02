@@ -16,7 +16,8 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
-  const result = await OrderService.getAllFromDB();
+  const { id, role } = req.user as any;
+  const result = await OrderService.getAllFromDB(id, role);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

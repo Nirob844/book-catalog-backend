@@ -55,18 +55,53 @@ const insertIntoDB = async (userId: string, data: IOrderData): Promise<any> => {
   throw new ApiError(httpStatus.BAD_REQUEST, 'Unable to create course');
 };
 
-const getAllFromDB = async (): Promise<Order[]> => {
-  const reviewsAndRatings = await prisma.order.findMany({
-    include: {
-      user: true,
-      orderedBooks: {
-        include: {
-          book: true,
+// const getAllFromDB = async (): Promise<Order[]> => {
+//   const reviewsAndRatings = await prisma.order.findMany({
+//     include: {
+//       user: true,
+//       orderedBooks: {
+//         include: {
+//           book: true,
+//         },
+//       },
+//     },
+//   });
+//   return reviewsAndRatings;
+// };
+const getAllFromDB = async (userId: string, role: string): Promise<Order[]> => {
+  if (role === 'admin') {
+    // Administrators can access all orders
+    const allOrders = await prisma.order.findMany({
+      include: {
+        user: true,
+        orderedBooks: {
+          include: {
+            book: true,
+          },
         },
       },
-    },
-  });
-  return reviewsAndRatings;
+    });
+    return allOrders;
+  } else if (role === 'customer') {
+    // Customers can access their own orders
+    const customerOrders = await prisma.order.findMany({
+      where: {
+        userId: userId, // Filter orders by the customer's userId
+      },
+      include: {
+        user: true,
+        orderedBooks: {
+          include: {
+            book: true,
+          },
+        },
+      },
+    });
+    return customerOrders;
+  } else {
+    // Handle other roles or throw an error if needed
+    throw new Error('Invalid role');
+  }
 };
 
 const getDataById = async (id: string): Promise<Order | null> => {
