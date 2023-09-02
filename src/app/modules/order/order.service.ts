@@ -6,7 +6,6 @@ import { asyncForEach } from '../../../shared/utils';
 import { IOrderData, IOrderedBook } from './order.interface';
 
 const insertIntoDB = async (userId: string, data: IOrderData): Promise<any> => {
-  console.log('service userid', userId);
   data.userId = userId;
   console.log(data);
   const { orderedBooks, ...orderData } = data;
@@ -55,19 +54,6 @@ const insertIntoDB = async (userId: string, data: IOrderData): Promise<any> => {
   throw new ApiError(httpStatus.BAD_REQUEST, 'Unable to create course');
 };
 
-// const getAllFromDB = async (): Promise<Order[]> => {
-//   const reviewsAndRatings = await prisma.order.findMany({
-//     include: {
-//       user: true,
-//       orderedBooks: {
-//         include: {
-//           book: true,
-//         },
-//       },
-//     },
-//   });
-//   return reviewsAndRatings;
-// };
 const getAllFromDB = async (userId: string, role: string): Promise<Order[]> => {
   if (role === 'admin') {
     // Administrators can access all orders
@@ -104,22 +90,67 @@ const getAllFromDB = async (userId: string, role: string): Promise<Order[]> => {
   }
 };
 
-const getDataById = async (id: string): Promise<Order | null> => {
-  const result = await prisma.order.findUnique({
-    where: {
-      id,
-    },
-    include: {
-      user: true,
-      orderedBooks: {
-        include: {
-          book: true,
+// const getDataById = async (id: string): Promise<Order | null> => {
+//   const result = await prisma.order.findUnique({
+//     where: {
+//       id,
+//     },
+//     include: {
+//       user: true,
+//       orderedBooks: {
+//         include: {
+//           book: true,
+//         },
+//       },
+//     },
+//   });
+
+//   return result;
+// };
+const getDataById = async (
+  orderId: string,
+  userId: string,
+  role: string
+): Promise<Order | null> => {
+  let order: Order | null = null;
+
+  if (role === 'admin') {
+    // Admins can access any order
+    order = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+      include: {
+        user: true,
+        orderedBooks: {
+          include: {
+            book: true,
+          },
         },
       },
-    },
-  });
+    });
+  } else if (role === 'customer') {
+    // Customers can access their own orders
+    order = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+        userId: userId, // Ensure the order belongs to the customer
+      },
+      include: {
+        user: true,
+        orderedBooks: {
+          include: {
+            book: true,
+          },
+        },
+      },
+    });
+  } else {
+    // Handle other roles or throw an error if needed
+    throw new Error('Invalid role');
+  }
 
-  return result;
+  return order;
 };
 
 const updateOneInDB = async (

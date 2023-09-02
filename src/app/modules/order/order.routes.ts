@@ -10,7 +10,11 @@ router.get(
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.CUSTOMER),
   OrderController.getAllFromDB
 );
-router.get('/:id', OrderController.getDataById);
+router.get(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.CUSTOMER),
+  OrderController.getDataById
+);
 router.post('/', auth(ENUM_USER_ROLE.CUSTOMER), OrderController.insertIntoDB);
 router.patch('/:id', auth(ENUM_USER_ROLE.ADMIN), OrderController.updateOneInDB);
 router.delete(

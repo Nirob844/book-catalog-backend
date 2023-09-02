@@ -5,8 +5,8 @@ import sendResponse from '../../../shared/sendResponse';
 import { OrderService } from './order.service';
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
-  const { id } = req.user as any;
-  const result = await OrderService.insertIntoDB(id, req.body);
+  const { userId } = req.user as any;
+  const result = await OrderService.insertIntoDB(userId, req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -16,8 +16,8 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
-  const { id, role } = req.user as any;
-  const result = await OrderService.getAllFromDB(id, role);
+  const { userId, role } = req.user as any;
+  const result = await OrderService.getAllFromDB(userId, role);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -28,7 +28,8 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getDataById = catchAsync(async (req: Request, res: Response) => {
-  const result = await OrderService.getDataById(req.params.id);
+  const { userId, role } = req.user as any;
+  const result = await OrderService.getDataById(req.params.id, userId, role);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

@@ -74,6 +74,11 @@
             "date": 1693643656026,
             "name": "C:\\project\\level-2\\book-catallog-backend\\logs\\winston\\successes\\phu-2023-02-09-14-success.log",
             "hash": "7c71014d9beda34293818197242bd389c9025999596c79e0042f83ae61949692"
+        },
+        {
+            "date": 1693645325424,
+            "name": "C:\\project\\level-2\\book-catallog-backend\\logs\\winston\\successes\\phu-2023-02-09-15-success.log",
+            "hash": "7d0f75a7386187d6a3fcf5da3978ef9b59fccf1616797e865ebffcc08954a20b"
         }
     ],
     "hashType": "sha256"
