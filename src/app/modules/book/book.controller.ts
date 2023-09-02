@@ -32,15 +32,6 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getDataById = catchAsync(async (req: Request, res: Response) => {
-  const result = await BookService.getDataById(req.params.id);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Book data fetched!!',
-    data: result,
-  });
-});
 const getDataByCategoryId = catchAsync(async (req: Request, res: Response) => {
   const options = pick(req.query, paginationFields);
   const result = await BookService.getDataByCategoryId(
@@ -53,6 +44,16 @@ const getDataByCategoryId = catchAsync(async (req: Request, res: Response) => {
     message: 'Book data fetched!!',
     meta: result.meta,
     data: result.data,
+  });
+});
+
+const getDataById = catchAsync(async (req: Request, res: Response) => {
+  const result = await BookService.getDataById(req.params.id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Book data fetched!!',
+    data: result,
   });
 });
 

@@ -5,9 +5,11 @@ import prisma from '../../../shared/prisma';
 import { asyncForEach } from '../../../shared/utils';
 import { IOrderData, IOrderedBook } from './order.interface';
 
-const insertIntoDB = async (data: IOrderData): Promise<any> => {
+const insertIntoDB = async (userId: string, data: IOrderData): Promise<any> => {
+  console.log('service userid', userId);
+  data.userId = userId;
+  console.log(data);
   const { orderedBooks, ...orderData } = data;
-
   const newOrder = await prisma.$transaction(async transactionClient => {
     const result = await transactionClient.order.create({
       data: orderData,
