@@ -59,6 +59,16 @@
             "date": 1693587787487,
             "name": "C:\\project\\level-2\\book-catallog-backend\\logs\\winston\\successes\\phu-2023-01-09-23-success.log",
             "hash": "5c901cfc67f6ee54fa6dded7af98fcfac4ad951aa1b4735e1626d38ee7969ecc"
+        },
+        {
+            "date": 1693628305501,
+            "name": "C:\\project\\level-2\\book-catallog-backend\\logs\\winston\\successes\\phu-2023-02-09-10-success.log",
+            "hash": "5a0995a406838fd91ee8c41ff89e6a82481abac1eb856da3fed8b4848f006161"
+        },
+        {
+            "date": 1693630975311,
+            "name": "C:\\project\\level-2\\book-catallog-backend\\logs\\winston\\successes\\phu-2023-02-09-11-success.log",
+            "hash": "54babd6bd326be41d62c747c5958e8877113eb2be222fefa2865405f2020a632"
         }
     ],
     "hashType": "sha256"

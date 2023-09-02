@@ -4,10 +4,10 @@ import httpStatus from 'http-status';
 
 import { User } from '@prisma/client';
 import { Secret } from 'jsonwebtoken';
-import config from '../../../config';
 import ApiError from '../../../errors/ApiError';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import prisma from '../../../shared/prisma';
+import config from '../../routes/config';
 import { ILoginUser, ILoginUserResponse } from './auth.interface';
 
 const insertIntoDB = async (data: User): Promise<User> => {

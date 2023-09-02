@@ -1,9 +1,9 @@
 import { User } from '@prisma/client';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import config from '../../../config';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
+import config from '../../routes/config';
 import { ILoginUserResponse } from './auth.interface';
 import { AuthService } from './auth.service';
 

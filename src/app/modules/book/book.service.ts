@@ -1,8 +1,8 @@
 import { Book, Prisma } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
-import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
+import { IPaginationOptions } from './../../../interfaces/pagination';
 import {
   bookRelationalFields,
   bookRelationalFieldsMapper,
@@ -104,6 +104,54 @@ const getDataById = async (id: string): Promise<Book | null> => {
   return result;
 };
 
+// const getDataByCategoryId = async (categoryId: string): Promise<Book[]> => {
+//   const results = await prisma.book.findMany({
+//     where: {
+//       categoryId: categoryId,
+//     },
+//   });
+
+//   return results;
+// };
+
+const getDataByCategoryId = async (
+  categoryId: string,
+  options: IPaginationOptions
+): Promise<IGenericResponse<Book[]>> => {
+  const { limit, page, skip } = paginationHelpers.calculatePagination(options);
+
+  const results = await prisma.book.findMany({
+    include: {
+      category: true,
+    },
+    where: {
+      categoryId: categoryId,
+    },
+    skip,
+    take: limit,
+    orderBy:
+      options.sortBy && options.sortOrder
+        ? { [options.sortBy]: options.sortOrder }
+        : {
+            createdAt: 'desc',
+          },
+  });
+  const total = await prisma.book.count({
+    where: {
+      categoryId: categoryId,
+    },
+  });
+
+  return {
+    meta: {
+      total,
+      page,
+      limit,
+    },
+    data: results,
+  };
+};
+
 const updateOneInDB = async (
   id: string,
   payload: Partial<Book>
@@ -130,6 +178,7 @@ export const BookService = {
   insertIntoDB,
   getAllFromDB,
   getDataById,
+  getDataByCategoryId,
   updateOneInDB,
   deleteByIdFromDB,
 };

@@ -1,6 +1,6 @@
 import { Server } from 'http';
 import app from './app';
-import config from './config';
+import config from './app/routes/config';
 import { errorlogger, logger } from './shared/logger';
 
 async function bootstrap() {
