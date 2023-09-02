@@ -8,7 +8,6 @@ import {
   bookRelationalFieldsMapper,
   bookSearchAbleFields,
 } from './book.constants';
-import { IBookFilterRequest } from './book.interface';
 
 const insertIntoDB = async (data: Book): Promise<Book> => {
   const result = await prisma.book.create({
@@ -22,11 +21,11 @@ const insertIntoDB = async (data: Book): Promise<Book> => {
 };
 
 const getAllFromDB = async (
-  filters: IBookFilterRequest,
+  filters: any,
   options: IPaginationOptions
 ): Promise<IGenericResponse<Book[]>> => {
   const { limit, page, skip } = paginationHelpers.calculatePagination(options);
-  const { searchTerm, ...filterData } = filters;
+  const { searchTerm, minPrice, maxPrice, ...filterData } = filters;
 
   const andConditions = [];
 
@@ -58,6 +57,25 @@ const getAllFromDB = async (
           };
         }
       }),
+    });
+  }
+
+  // Convert minPrice and maxPrice to floats
+  const minPriceFloat = parseFloat(minPrice);
+  const maxPriceFloat = parseFloat(maxPrice);
+  if (!isNaN(minPriceFloat)) {
+    andConditions.push({
+      price: {
+        gte: minPriceFloat,
+      },
+    });
+  }
+
+  if (!isNaN(maxPriceFloat)) {
+    andConditions.push({
+      price: {
+        lte: maxPriceFloat,
+      },
     });
   }
 
