@@ -21,7 +21,6 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, bookFilterAbleFields);
   const options = pick(req.query, paginationFields);
-
   const result = await BookService.getAllFromDB(filters, options);
   sendResponse(res, {
     statusCode: httpStatus.OK,

@@ -91,6 +91,7 @@ const getAllFromDB = async (
     data: result,
   };
 };
+
 const getDataById = async (id: string): Promise<Book | null> => {
   const result = await prisma.book.findUnique({
     where: {
@@ -103,16 +104,6 @@ const getDataById = async (id: string): Promise<Book | null> => {
 
   return result;
 };
-
-// const getDataByCategoryId = async (categoryId: string): Promise<Book[]> => {
-//   const results = await prisma.book.findMany({
-//     where: {
-//       categoryId: categoryId,
-//     },
-//   });
-
-//   return results;
-// };
 
 const getDataByCategoryId = async (
   categoryId: string,
