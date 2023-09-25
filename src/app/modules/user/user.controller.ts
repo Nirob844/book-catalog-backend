@@ -8,8 +8,8 @@ import { UserService } from './user.service';
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.insertIntoDB(req.body);
   sendResponse<User>(res, {
-    statusCode: httpStatus.OK,
     success: true,
+    statusCode: httpStatus.OK,
     message: 'user Created!!',
     data: result,
   });
@@ -18,8 +18,8 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.getAllFromDB();
   sendResponse(res, {
-    statusCode: httpStatus.OK,
     success: true,
+    statusCode: httpStatus.OK,
     message: 'user data fetched!!',
     data: result,
   });

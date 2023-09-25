@@ -20,8 +20,8 @@ const user_service_1 = require("./user.service");
 const insertIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_service_1.UserService.insertIntoDB(req.body);
     (0, sendResponse_1.default)(res, {
-        statusCode: http_status_1.default.OK,
         success: true,
+        statusCode: http_status_1.default.OK,
         message: 'user Created!!',
         data: result,
     });
@@ -29,8 +29,8 @@ const insertIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
 const getAllFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_service_1.UserService.getAllFromDB();
     (0, sendResponse_1.default)(res, {
-        statusCode: http_status_1.default.OK,
         success: true,
+        statusCode: http_status_1.default.OK,
         message: 'user data fetched!!',
         data: result,
     });

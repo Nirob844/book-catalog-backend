@@ -4,11 +4,10 @@ import httpStatus from 'http-status';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import config from '../../routes/config';
-import { ILoginUserResponse } from './auth.interface';
 import { AuthService } from './auth.service';
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
-  const result = await AuthService.insertIntoDB(req.body);
+  const result: any = await AuthService.insertIntoDB(req.body);
   sendResponse<User>(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -30,11 +29,17 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
 
   res.cookie('refreshToken', refreshToken, cookieOptions);
 
-  sendResponse<ILoginUserResponse>(res, {
-    statusCode: httpStatus.OK,
+  // sendResponse<ILoginUserResponse>(res, {
+  //   statusCode: httpStatus.OK,
+  //   success: true,
+  //   message: 'User login successfully !',
+  //   data: others,
+  // });
+  res.send({
     success: true,
-    message: 'User login successfully !',
-    data: others,
+    statusCode: httpStatus.OK,
+    message: 'User signin successfully!',
+    token: others.accessToken,
   });
 });
 
